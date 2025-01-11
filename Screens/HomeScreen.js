@@ -7,7 +7,6 @@ import {
   ScrollView,
   RefreshControl,
   TouchableOpacity,
-  FlatList,
 } from "react-native";
 import AuthContext from "../context/authContext";
 import axios from "axios";
@@ -84,21 +83,6 @@ const HomeScreen = () => {
       setDaysLeft(daysRemaining);
     }
   }, [userdetail?.currentGoal]);
-
-  const renderActivity = ({ item }) => {
-    return (
-      <View style={styles.activityContainer}>
-        <Text style={styles.dateText}>
-          {item.date
-            ? new Date(item.date).toLocaleDateString()
-            : "Date not available"}
-        </Text>
-        <Text style={styles.activityText}>
-          {item.name ? item.name : "No Name"}: {item.amount ? item.amount : "0"}
-        </Text>
-      </View>
-    );
-  };
 
   if (loading && !refreshing) {
     return (
@@ -231,7 +215,7 @@ const HomeScreen = () => {
               />
               <Text style={styles.jobTitle}>Deadline</Text>
               <Text style={styles.jobDetail}>
-                {daysLeft === 0
+                {daysLeft <= 0
                   ? "Expired"
                   : daysLeft !== null
                   ? `Days left: ${daysLeft}`

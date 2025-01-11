@@ -5,8 +5,10 @@ import AuthContext from "../context/authContext";
 import LoginScreen from "../Screens/LoginScreen";
 import SignupScreen from "../Screens/SignupScreen";
 import BottomTabNavigator from "./BottomTabNavigator";
+import AddIncome from "../Screens/AddIncome";
 
 const Stack = createStackNavigator();
+const AuthenticatedStack = createStackNavigator();
 
 const AppNavigator = () => {
   const { isAuthenticated } = useContext(AuthContext);
@@ -26,9 +28,13 @@ const AppNavigator = () => {
   }
 
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator>
       {isAuthenticated ? (
-        <Stack.Screen name="Main" component={BottomTabNavigator} />
+        <Stack.Screen
+          name="AuthenticatedStack"
+          component={AuthenticatedStackScreen}
+          options={{ headerShown: false }}
+        />
       ) : (
         <>
           <Stack.Screen name="Login" component={LoginScreen} />
@@ -38,5 +44,30 @@ const AppNavigator = () => {
     </Stack.Navigator>
   );
 };
+
+const AuthenticatedStackScreen = () => (
+  <AuthenticatedStack.Navigator screenOptions={{ headerShown: false }}>
+    <AuthenticatedStack.Screen
+      name="Main"
+      component={BottomTabNavigator}
+      options={{ headerShown: false }}
+    />
+    <AuthenticatedStack.Screen
+      name="add-income"
+      component={AddIncome}
+      options={{
+        headerShown: true,
+        title: "Add Income",
+        headerBackTitleVisible: false,
+        headerStyle: {
+          backgroundColor: "#00796B",
+        },
+        headerTitleStyle: {
+          fontWeight: "bold",
+        },
+      }}
+    />
+  </AuthenticatedStack.Navigator>
+);
 
 export default AppNavigator;
