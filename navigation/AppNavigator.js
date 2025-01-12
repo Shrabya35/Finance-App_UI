@@ -6,6 +6,8 @@ import LoginScreen from "../Screens/LoginScreen";
 import SignupScreen from "../Screens/SignupScreen";
 import BottomTabNavigator from "./BottomTabNavigator";
 import AddIncome from "../Screens/AddIncome";
+import AddExpense from "../Screens/AddExpense";
+import EditExpense from "../Screens/EditExpense";
 
 const Stack = createStackNavigator();
 const AuthenticatedStack = createStackNavigator();
@@ -61,6 +63,36 @@ const AuthenticatedStackScreen = () => (
         headerBackTitleVisible: false,
         headerStyle: {
           backgroundColor: "#00796B",
+        },
+        headerTitleStyle: {
+          fontWeight: "bold",
+        },
+      }}
+    />
+    <AuthenticatedStack.Screen
+      name="add-expense"
+      component={AddExpense}
+      options={{
+        headerShown: true,
+        title: "Add Expense",
+        headerBackTitleVisible: false,
+        headerStyle: {
+          backgroundColor: "#D32F2F",
+        },
+        headerTitleStyle: {
+          fontWeight: "bold",
+        },
+      }}
+    />
+    <AuthenticatedStack.Screen
+      name="edit-expense"
+      component={EditExpense}
+      options={{
+        headerShown: true,
+        title: "Edit Expense",
+        headerBackTitleVisible: false,
+        headerStyle: {
+          backgroundColor: "#007bff",
         },
         headerTitleStyle: {
           fontWeight: "bold",

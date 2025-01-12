@@ -1,14 +1,33 @@
-import React, { useContext } from "react";
+import React, { useState, useContext } from "react";
 import { View, Text, Button, StyleSheet } from "react-native";
 import AuthContext from "../context/authContext";
+import ConfirmAlert from "../alert/confirmAlert";
 
 const ProfileScreen = () => {
   const { logout } = useContext(AuthContext);
+  const [alertVisible, setAlertVisible] = useState(false);
+
+  const handleConfirm = () => {
+    setAlertVisible(false);
+    console.log("Confirmed!");
+  };
+
+  const handleCancel = () => {
+    setAlertVisible(false);
+    console.log("Cancelled!");
+  };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>goal!</Text>
-      <Button title="Logout" onPress={logout} />
+      <Button title="Show Alert" onPress={() => setAlertVisible(true)} />
+      <ConfirmAlert
+        visible={alertVisible}
+        title="Custom Alert"
+        message="This is a custom alert message!"
+        onConfirm={handleConfirm}
+        onCancel={handleCancel}
+      />
     </View>
   );
 };

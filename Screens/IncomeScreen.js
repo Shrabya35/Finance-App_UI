@@ -51,7 +51,7 @@ const IncomeScreen = ({ navigation }) => {
 
   useEffect(() => {
     getIncomes();
-  }, [token]);
+  }, [token, page]);
 
   const handleRefresh = () => {
     setRefreshing(true);
@@ -149,7 +149,7 @@ const IncomeScreen = ({ navigation }) => {
               );
             })
           ) : (
-            <Text>No recent activities available.</Text>
+            <Text>No recent Incomes available.</Text>
           )}
         </View>
         <View style={styles.pagination}>

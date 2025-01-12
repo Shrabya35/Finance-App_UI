@@ -238,10 +238,27 @@ const HomeScreen = () => {
               <View style={styles.activityContainer} key={index}>
                 <View style={styles.activityContainer} key={index}>
                   <View style={styles.activityContainerLeft}>
-                    <Text style={styles.label}>
-                      {new Date(item.date).toLocaleDateString()}
-                    </Text>
-                    <Text style={styles.value}>{item.name}</Text>
+                    <View>
+                      {isIncome ? (
+                        <Icon
+                          name="trending-up-outline"
+                          size={20}
+                          color="#00796B"
+                        />
+                      ) : (
+                        <Icon
+                          name="trending-down-outline"
+                          size={15}
+                          color="#F44336"
+                        />
+                      )}
+                    </View>
+                    <View style={styles.activityContainerLeftDetail}>
+                      <Text style={styles.label}>
+                        {new Date(item.date).toLocaleDateString()}
+                      </Text>
+                      <Text style={styles.value}>{item.name}</Text>
+                    </View>
                   </View>
                   <View style={styles.activityContainerRight}>
                     <Text style={[styles.activityText, amountStyle]}>
@@ -414,6 +431,13 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     backgroundColor: "#FFFFFF",
     borderRadius: 10,
+  },
+  activityContainerLeft: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  activityContainerLeftDetail: {
+    marginLeft: 10,
   },
 });
 
