@@ -4,12 +4,13 @@ import {
   View,
   Text,
   TextInput,
-  Button,
   TouchableOpacity,
   StyleSheet,
   Alert,
   ActivityIndicator,
+  Image,
 } from "react-native";
+import { Checkbox } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import AuthContext from "../context/authContext";
 
@@ -17,6 +18,7 @@ const LoginScreen = () => {
   const { login } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const navigation = useNavigation();
 
@@ -35,7 +37,7 @@ const LoginScreen = () => {
 
       const { token, message } = response.data;
 
-      await login(token);
+      await login(token, rememberMe);
       Alert.alert("Success", message || "Login successful!");
     } catch (error) {
       console.error("Error logging in:", error);
@@ -50,7 +52,10 @@ const LoginScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Login</Text>
+      <Image source={require("../assets/logo.png")} style={styles.logo} />
+      <Text style={styles.appTitle}>Finance Tracker</Text>
+      <Text style={styles.welcomeText}>Welcome Back!</Text>
+      <Text style={styles.signInText}>Sign In to Continue</Text>
       <TextInput
         style={styles.input}
         placeholder="Email"
@@ -66,14 +71,27 @@ const LoginScreen = () => {
         onChangeText={setPassword}
         secureTextEntry
       />
+      <View style={styles.rememberMeContainer}>
+        <Checkbox
+          status={rememberMe ? "checked" : "unchecked"}
+          onPress={() => setRememberMe(!rememberMe)}
+          color="#00796B"
+        />
+        <Text style={styles.rememberMeText}>Remember Me</Text>
+      </View>
       {isLoading ? (
-        <ActivityIndicator size="large" color="#0000ff" />
+        <ActivityIndicator size="large" color="#00796B" />
       ) : (
-        <Button title="Login" onPress={handleLogin} />
+        <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+          <Text style={styles.loginButtonText}>Sign In to My Account</Text>
+        </TouchableOpacity>
       )}
-      <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
-        <Text style={styles.signupLink}>Don't have an account? Sign up</Text>
-      </TouchableOpacity>
+      <View style={styles.signupLinkContainer}>
+        <Text style={styles.signupText}>Don't have an account? </Text>
+        <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
+          <Text style={styles.signupLink}>Sign Up</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -82,27 +100,88 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    padding: 16,
-    backgroundColor: "#f9f9f9",
+    padding: 20,
+    backgroundColor: "#F9F9F9",
   },
-  title: {
-    fontSize: 24,
-    textAlign: "center",
-    marginBottom: 16,
+  logo: {
+    width: 100,
+    height: 100,
+    alignSelf: "center",
+    marginBottom: 10,
+  },
+  appTitle: {
+    fontSize: 40,
     fontWeight: "bold",
+    textAlign: "center",
+    color: "#00796B",
+    marginBottom: 30,
+  },
+  welcomeText: {
+    fontSize: 30,
+    textAlign: "center",
+    marginBottom: 5,
+    color: "#333",
+  },
+  signInText: {
+    fontSize: 16,
+    textAlign: "center",
+    marginBottom: 20,
+    color: "#c2bac2",
   },
   input: {
-    borderWidth: 1,
-    borderColor: "#ccc",
-    padding: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: "#c2bac2",
+    paddingVertical: 8,
     marginBottom: 16,
-    borderRadius: 4,
-    backgroundColor: "#fff",
+    fontSize: 16,
+    color: "#000",
+  },
+  rememberMeContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 20,
+  },
+  rememberMeText: {
+    fontSize: 14,
+    color: "#555",
+  },
+  loginButton: {
+    backgroundColor: "#00796B",
+    padding: 15,
+    borderRadius: 5,
+    alignItems: "center",
+  },
+  loginButtonText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#fff",
+  },
+  signupLinkContainer: {
+    marginTop: 20,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  signupText: {
+    fontSize: 14,
+    color: "#555",
   },
   signupLink: {
-    marginTop: 16,
-    textAlign: "center",
-    color: "#007BFF",
+    fontSize: 14,
+    color: "#00796B",
+    fontWeight: "bold",
+  },
+  rememberMeContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 15,
+  },
+  checkbox: {
+    marginRight: 8,
+  },
+  rememberMeText: {
+    fontSize: 14,
+    color: "#555",
   },
 });
 

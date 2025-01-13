@@ -18,8 +18,12 @@ export const AuthProvider = ({ children }) => {
     checkLoginStatus();
   }, []);
 
-  const login = async (jwtToken) => {
-    await AsyncStorage.setItem("jwtToken", jwtToken);
+  const login = async (jwtToken, rememberMe) => {
+    if (rememberMe) {
+      await AsyncStorage.setItem("jwtToken", jwtToken);
+    } else {
+      await AsyncStorage.removeItem("jwtToken");
+    }
     setToken(jwtToken);
     setIsAuthenticated(true);
   };

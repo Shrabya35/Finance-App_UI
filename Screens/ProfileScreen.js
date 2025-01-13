@@ -20,14 +20,7 @@ const ProfileScreen = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>goal!</Text>
-      <Button title="Show Alert" onPress={() => setAlertVisible(true)} />
-      <ConfirmAlert
-        visible={alertVisible}
-        title="Custom Alert"
-        message="This is a custom alert message!"
-        onConfirm={handleConfirm}
-        onCancel={handleCancel}
-      />
+      <Button title="Logout" onPress={logout} />
     </View>
   );
 };
