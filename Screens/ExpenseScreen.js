@@ -7,7 +7,6 @@ import {
   StyleSheet,
   ActivityIndicator,
   TouchableOpacity,
-  Alert,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import AuthContext from "../context/authContext";
@@ -91,10 +90,6 @@ const ExpenseScreen = ({ navigation }) => {
     getExpense();
   };
 
-  const handleAddExpense = () => {
-    navigation.navigate("AuthenticatedStack", { screen: "add-expense" });
-  };
-
   const renderPageNumbers = () => {
     let pages = [];
     let startPage = Math.max(1, page - 2);
@@ -164,52 +159,57 @@ const ExpenseScreen = ({ navigation }) => {
         nestedScrollEnabled={true}
       >
         <Text style={styles.title}>Monthly Expense!</Text>
-        <ScrollView
-          style={styles.monthlyExpense}
-          horizontal={true}
-          nestedScrollEnabled={true}
-          showsHorizontalScrollIndicator={false}
-        >
-          {monthlyExpense.map((item, index) => (
-            <View
-              key={index}
-              style={[
-                styles.monthlyExpenseCard,
-                { backgroundColor: "#D32F2F" },
-              ]}
-            >
-              <View style={styles.upperRow}>
-                <View style={styles.leftColumn}>
-                  <Text style={styles.cardText}>
-                    {new Date(item.deductionDate).toLocaleDateString()}
-                  </Text>
-                  <Text style={styles.cardTitle}>{item.name}</Text>
+        {monthlyExpense && monthlyExpense.length > 0 ? (
+          <ScrollView
+            style={styles.monthlyExpense}
+            horizontal={true}
+            nestedScrollEnabled={true}
+            showsHorizontalScrollIndicator={false}
+          >
+            {monthlyExpense.map((item, index) => (
+              <View
+                key={index}
+                style={[
+                  styles.monthlyExpenseCard,
+                  { backgroundColor: "#D32F2F" }, // Ensure comma is present
+                ]}
+              >
+                <View style={styles.upperRow}>
+                  <View style={styles.leftColumn}>
+                    <Text style={styles.cardText}>
+                      {new Date(item.deductionDate).toLocaleDateString()}
+                    </Text>
+                    <Text style={styles.cardTitle}>{item.name}</Text>
+                  </View>
+                  <View style={styles.rightColumn}>
+                    <Text style={styles.amountText}>₹{item.amount}</Text>
+                  </View>
                 </View>
-                <View style={styles.rightColumn}>
-                  <Text style={styles.amountText}>₹{item.amount}</Text>
+
+                <View style={styles.cardActions}>
+                  <TouchableOpacity
+                    style={styles.editButton}
+                    onPress={() =>
+                      navigation.navigate("edit-expense", { expense: item })
+                    }
+                  >
+                    <Text style={styles.editButtonText}>Edit</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.deleteButton}
+                    onPress={() => handleDelete(item._id)}
+                  >
+                    <Text style={styles.deleteButtonText}>Delete</Text>
+                  </TouchableOpacity>
                 </View>
               </View>
-
-              <View style={styles.cardActions}>
-                <TouchableOpacity
-                  style={styles.editButton}
-                  onPress={() =>
-                    navigation.navigate("edit-expense", { expense: item })
-                  }
-                >
-                  <Text style={styles.editButtonText}>Edit</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.deleteButton}
-                  onPress={() => handleDelete(item._id)}
-                >
-                  <Text style={styles.deleteButtonText}>Delete</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          ))}
-        </ScrollView>
-
+            ))}
+          </ScrollView>
+        ) : (
+          <View style={styles.noMonthlyExpenseContainer}>
+            <Text style={styles.noExpenseText}>No monthly expense set.</Text>
+          </View>
+        )}
         <Text style={styles.title}>Expense Statements</Text>
         <View style={styles.expenses}>
           {expense && expense.length > 0 ? (
@@ -260,7 +260,9 @@ const ExpenseScreen = ({ navigation }) => {
       </ScrollView>
       <TouchableOpacity
         style={styles.floatingButton}
-        onPress={handleAddExpense}
+        onPress={() =>
+          navigation.navigate("AuthenticatedStack", { screen: "add-expense" })
+        }
       >
         <Icon name="add" size={30} color="#fff" />
       </TouchableOpacity>
@@ -337,6 +339,9 @@ const styles = StyleSheet.create({
   cardActions: {
     flexDirection: "row",
     justifyContent: "space-between",
+  },
+  noMonthlyExpenseContainer: {
+    paddingHorizontal: 20,
   },
   editButton: {
     backgroundColor: "#007bff",

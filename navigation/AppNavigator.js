@@ -8,6 +8,8 @@ import BottomTabNavigator from "./BottomTabNavigator";
 import AddIncome from "../Screens/AddIncome";
 import AddExpense from "../Screens/AddExpense";
 import EditExpense from "../Screens/EditExpense";
+import AddGoal from "../Screens/AddGoal";
+import AddJob from "../Screens/AddJob";
 
 const Stack = createStackNavigator();
 const AuthenticatedStack = createStackNavigator();
@@ -56,24 +58,24 @@ const AppNavigator = () => {
 };
 
 const AuthenticatedStackScreen = () => (
-  <AuthenticatedStack.Navigator screenOptions={{ headerShown: false }}>
-    <AuthenticatedStack.Screen
-      name="Main"
-      component={BottomTabNavigator}
-      options={{ headerShown: false }}
-    />
+  <AuthenticatedStack.Navigator
+    screenOptions={{
+      headerBackTitleVisible: false,
+      headerTitleStyle: {
+        fontWeight: "bold",
+      },
+      headerShown: false,
+    }}
+  >
+    <AuthenticatedStack.Screen name="Main" component={BottomTabNavigator} />
     <AuthenticatedStack.Screen
       name="add-income"
       component={AddIncome}
       options={{
         headerShown: true,
         title: "Add Income",
-        headerBackTitleVisible: false,
         headerStyle: {
           backgroundColor: "#00796B",
-        },
-        headerTitleStyle: {
-          fontWeight: "bold",
         },
       }}
     />
@@ -83,12 +85,8 @@ const AuthenticatedStackScreen = () => (
       options={{
         headerShown: true,
         title: "Add Expense",
-        headerBackTitleVisible: false,
         headerStyle: {
           backgroundColor: "#D32F2F",
-        },
-        headerTitleStyle: {
-          fontWeight: "bold",
         },
       }}
     />
@@ -98,12 +96,30 @@ const AuthenticatedStackScreen = () => (
       options={{
         headerShown: true,
         title: "Edit Expense",
-        headerBackTitleVisible: false,
         headerStyle: {
           backgroundColor: "#007bff",
         },
-        headerTitleStyle: {
-          fontWeight: "bold",
+      }}
+    />
+    <AuthenticatedStack.Screen
+      name="add-goal"
+      component={AddGoal}
+      options={{
+        headerShown: true,
+        title: "Add Goal",
+        headerStyle: {
+          backgroundColor: "#00796B",
+        },
+      }}
+    />
+    <AuthenticatedStack.Screen
+      name="add-job"
+      component={AddJob}
+      options={{
+        headerShown: true,
+        title: "Add Job",
+        headerStyle: {
+          backgroundColor: "#00796B",
         },
       }}
     />

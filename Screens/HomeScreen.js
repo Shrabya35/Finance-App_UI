@@ -13,7 +13,7 @@ import axios from "axios";
 import Icon from "react-native-vector-icons/Ionicons";
 import * as Progress from "react-native-progress";
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }) => {
   const { token } = useContext(AuthContext);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -124,8 +124,15 @@ const HomeScreen = () => {
           <View style={styles.section}>
             <Icon name="wallet" size={24} color="#00796B" />
             <View style={styles.textWrapper}>
-              <Text style={styles.label}>Balance</Text>
-              <Text style={styles.value}>
+              <Text style={styles.label}>Pocket</Text>
+              <Text
+                style={[
+                  styles.value,
+                  {
+                    color: userdetail.user?.pocket >= 0 ? "#00796B" : "#D32F2F",
+                  },
+                ]}
+              >
                 {userdetail.user?.pocket !== null &&
                 userdetail.user?.pocket !== undefined
                   ? `${userdetail.user.pocket}`
@@ -172,56 +179,92 @@ const HomeScreen = () => {
           <View style={styles.jobGoalCard}>
             <View style={styles.cardTop}>
               <Text style={styles.cardTitle}>My Job</Text>
-              <TouchableOpacity>
-                <Icon name="pencil" size={15} color="#00796B" />
-              </TouchableOpacity>
+              {userdetail.job && (
+                <TouchableOpacity>
+                  <Icon name="pencil" size={15} color="#00796B" />
+                </TouchableOpacity>
+              )}
             </View>
-            <View style={styles.content2}>
-              <Text style={styles.jobTitle}>Position</Text>
-              <Text style={styles.jobDetail}>
-                {userdetail.job?.name || "N/A"}
-              </Text>
-              <Text style={styles.jobTitle}>Organization</Text>
-              <Text style={styles.jobDetail}>
-                {userdetail.job?.organization || "N/A"}
-              </Text>
-              <Text style={styles.jobTitle}>Salary</Text>
-              <Text style={styles.jobDetail}>
-                {userdetail.job?.salary || "N/A"}
-              </Text>
-            </View>
+            {userdetail.job ? (
+              <View style={styles.content2}>
+                <Text style={styles.jobTitle}>Position</Text>
+                <Text style={styles.jobDetail}>
+                  {userdetail.job?.name || "N/A"}
+                </Text>
+                <Text style={styles.jobTitle}>Organization</Text>
+                <Text style={styles.jobDetail}>
+                  {userdetail.job?.organization || "N/A"}
+                </Text>
+                <Text style={styles.jobTitle}>Salary</Text>
+                <Text style={styles.jobDetail}>
+                  {userdetail.job?.salary || "N/A"}
+                </Text>
+              </View>
+            ) : (
+              <View>
+                <Text style={styles.noGoal}>No Job set</Text>
+                <TouchableOpacity
+                  style={styles.setGoal}
+                  onPress={() =>
+                    navigation.navigate("add-job", {
+                      job: userdetail.job,
+                    })
+                  }
+                >
+                  <Text style={styles.setGoalText}>Add Job</Text>
+                </TouchableOpacity>
+              </View>
+            )}
           </View>
           <View style={styles.jobGoalCard}>
             <View style={styles.cardTop}>
               <Text style={styles.cardTitle}>Current Goal</Text>
-              <TouchableOpacity>
-                <Icon name="eye" size={15} color="#00796B" />
-              </TouchableOpacity>
+              {userdetail.currentGoal && (
+                <TouchableOpacity>
+                  <Icon name="eye" size={15} color="#00796B" />
+                </TouchableOpacity>
+              )}
             </View>
-            <View style={styles.content2}>
-              <Text style={styles.jobTitle}>Current Goal</Text>
-              <Text style={styles.jobDetail}>
-                {userdetail.currentGoal?.name || "N/A"}
-              </Text>
-              <Text style={styles.jobTitle}>Progress</Text>
-              <Progress.Bar
-                progress={progress}
-                width={null}
-                height={5}
-                color="#4CAF50"
-                unfilledColor="#E0E0E0"
-                borderRadius={20}
-                style={styles.progress}
-              />
-              <Text style={styles.jobTitle}>Deadline</Text>
-              <Text style={styles.jobDetail}>
-                {daysLeft <= 0
-                  ? "Expired"
-                  : daysLeft !== null
-                  ? `Days left: ${daysLeft}`
-                  : "Loading target date..."}
-              </Text>
-            </View>
+            {userdetail.currentGoal ? (
+              <View style={styles.content2}>
+                <Text style={styles.jobTitle}>Goal</Text>
+                <Text style={styles.jobDetail}>
+                  {userdetail.currentGoal?.name || "N/A"}
+                </Text>
+                <Text style={styles.jobTitle}>Progress</Text>
+                <Progress.Bar
+                  progress={progress}
+                  width={null}
+                  height={5}
+                  color="#4CAF50"
+                  unfilledColor="#E0E0E0"
+                  borderRadius={20}
+                  style={styles.progress}
+                />
+                <Text style={styles.jobTitle}>Deadline</Text>
+                <Text style={styles.jobDetail}>
+                  {daysLeft <= 0
+                    ? "Expired"
+                    : daysLeft !== null
+                    ? `Days left: ${daysLeft}`
+                    : "Loading target date..."}
+                </Text>
+              </View>
+            ) : (
+              <View>
+                <Text style={styles.noGoal}>No Current goal set</Text>
+                <TouchableOpacity
+                  style={styles.setGoal}
+                  onPress={() =>
+                    navigation.navigate("add-goal", {
+                      currentGoal: userdetail.currentGoal,
+                    })
+                  }
+                >
+                  <Text style={styles.setGoalText}>Add New Goal</Text>
+                </TouchableOpacity>
+              </View>
+            )}
           </View>
         </View>
       </View>
@@ -416,6 +459,24 @@ const styles = StyleSheet.create({
     marginTop: 5,
     marginBottom: 5,
     width: "100%",
+  },
+  noGoal: {
+    textAlign: "center",
+    marginTop: 25,
+    fontWeight: "bold",
+  },
+  setGoal: {
+    paddingVertical: 8,
+    marginVertical: 10,
+    width: "100%",
+    backgroundColor: "#00796B",
+    borderRadius: 8,
+    alignItems: "center",
+  },
+  setGoalText: {
+    textAlign: "center",
+    color: "#FFF",
+    fontWeight: "bold",
   },
   recentActivity: {
     padding: 10,
