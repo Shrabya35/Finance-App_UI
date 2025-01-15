@@ -4,7 +4,7 @@ import HomeScreen from "../Screens/HomeScreen";
 import IncomeScreen from "../Screens/IncomeScreen";
 import ExpenseScreen from "../Screens/ExpenseScreen";
 import GoalScreen from "../Screens/GoalScreen";
-import ProfileScreen from "../Screens/ProfileScreen";
+import SettingScreen from "../Screens/SettingScreen";
 import Icon from "react-native-vector-icons/Ionicons";
 import { Image, Text, View, StyleSheet } from "react-native";
 
@@ -39,8 +39,8 @@ const BottomTabNavigator = () => {
             iconName = focused ? "trending-down" : "trending-down-outline";
           } else if (route.name === "Goal") {
             iconName = focused ? "flag" : "flag-outline";
-          } else if (route.name === "Profile") {
-            iconName = focused ? "person" : "person-outline";
+          } else if (route.name === "Settings") {
+            iconName = focused ? "settings" : "settings-outline";
           }
 
           return <Icon name={iconName} size={size} color={color} />;
@@ -66,7 +66,7 @@ const BottomTabNavigator = () => {
       <Tab.Screen name="Income" component={IncomeScreen} />
       <Tab.Screen name="Expense" component={ExpenseScreen} />
       <Tab.Screen name="Goal" component={GoalScreen} />
-      <Tab.Screen name="Profile" component={ProfileScreen} />
+      <Tab.Screen name="Settings" component={SettingScreen} />
     </Tab.Navigator>
   );
 };

@@ -171,7 +171,7 @@ const ExpenseScreen = ({ navigation }) => {
                 key={index}
                 style={[
                   styles.monthlyExpenseCard,
-                  { backgroundColor: "#D32F2F" }, // Ensure comma is present
+                  { backgroundColor: "#D32F2F" },
                 ]}
               >
                 <View style={styles.upperRow}>

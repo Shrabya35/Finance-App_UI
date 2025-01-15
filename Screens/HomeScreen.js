@@ -21,12 +21,9 @@ const HomeScreen = ({ navigation }) => {
   const [daysLeft, setDaysLeft] = useState(null);
   const [userdetail, setUserdetail] = useState({
     user: null,
-    income: null,
-    expense: null,
     job: null,
     currentGoal: null,
     totalExpense: 0,
-    goal: null,
     activites: null,
   });
 
@@ -47,7 +44,6 @@ const HomeScreen = ({ navigation }) => {
         totalExpense: userData.totalExpense,
         job: userData.job,
         currentGoal: userData.currentGoal,
-        goals: userData.goals,
         activities: userData.activities,
       });
     } catch (error) {
@@ -180,7 +176,11 @@ const HomeScreen = ({ navigation }) => {
             <View style={styles.cardTop}>
               <Text style={styles.cardTitle}>My Job</Text>
               {userdetail.job && (
-                <TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate("edit-job", { job: userdetail.job })
+                  }
+                >
                   <Icon name="pencil" size={15} color="#00796B" />
                 </TouchableOpacity>
               )}
@@ -219,11 +219,6 @@ const HomeScreen = ({ navigation }) => {
           <View style={styles.jobGoalCard}>
             <View style={styles.cardTop}>
               <Text style={styles.cardTitle}>Current Goal</Text>
-              {userdetail.currentGoal && (
-                <TouchableOpacity>
-                  <Icon name="eye" size={15} color="#00796B" />
-                </TouchableOpacity>
-              )}
             </View>
             {userdetail.currentGoal ? (
               <View style={styles.content2}>

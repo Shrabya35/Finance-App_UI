@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import {
   View,
   Text,
@@ -10,43 +10,28 @@ import {
 import AuthContext from "../context/authContext";
 import axios from "axios";
 
-const AddJob = ({ navigation, route }) => {
-  const { token } = useContext(AuthContext);
+const EditJob = ({ navigation, route }) => {
   const { job } = route.params;
-  const [name, setName] = useState("");
-  const [salary, setSalary] = useState("");
-  const [organization, setOrganization] = useState("");
-
-  useEffect(() => {
-    if (job) {
-      Alert.alert(
-        "Ongoing Job Detected",
-        "You already have a job. edit it to proceed.",
-        [
-          {
-            text: "OK",
-            onPress: () => navigation.navigate("Main", { screen: "Home" }),
-          },
-        ]
-      );
-    }
-  }, [job]);
+  const { token } = useContext(AuthContext);
+  const [name, setName] = useState(job.name);
+  const [salary, setSalary] = useState(job.salary);
+  const [organization, setOrganization] = useState(job.organization);
 
   const handleSubmit = async () => {
-    if (!name || !salary || !organization) {
-      Alert.alert("Please fill in all fields");
-      return;
-    }
-
-    if (isNaN(salary)) {
-      Alert.alert("Invalid Input", "Please enter valid numeric values.");
+    const numericSalary = parseFloat(salary);
+    if (!name || !numericSalary || !organization) {
+      Alert.alert("Please fill in all required fields");
       return;
     }
 
     try {
-      const response = await axios.post(
-        `http://192.168.1.9:9080/api/v1/job/add`,
-        { name, salary, organization },
+      const response = await axios.put(
+        `http://192.168.1.9:9080/api/v1/job/update/${job._id}`,
+        {
+          name,
+          salary: numericSalary,
+          organization,
+        },
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
@@ -54,29 +39,24 @@ const AddJob = ({ navigation, route }) => {
       setSalary("");
       setOrganization("");
 
-      const message = response?.data?.message || "Goal added successfully!";
-      Alert.alert("Success", message, [
+      Alert.alert("Success", response.data.message, [
         {
           text: "OK",
-          onPress: () => {
-            navigation.navigate("Main", {
-              screen: "Home",
-            });
-          },
+          onPress: () => navigation.navigate("Main", { screen: "Home" }),
         },
       ]);
     } catch (error) {
-      console.error("Error adding goal:", error);
+      console.error("Error editing Job:", error);
       Alert.alert(
         "Error",
-        "There was an issue adding your goal. Please try again."
+        error.response?.data?.error || "Unknown error occurred"
       );
     }
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Add Job</Text>
+      <Text style={styles.title}>Edit Job</Text>
 
       <View style={styles.form}>
         <TextInput
@@ -89,19 +69,19 @@ const AddJob = ({ navigation, route }) => {
           style={styles.input}
           placeholder="Salary"
           keyboardType="numeric"
-          value={salary}
-          onChangeText={setSalary}
+          value={String(salary)}
+          onChangeText={(text) => setSalary(text)}
         />
         <TextInput
           style={styles.input}
-          placeholder="Organization"
+          placeholder="Organization Name"
           value={organization}
           onChangeText={setOrganization}
         />
       </View>
 
       <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
-        <Text style={styles.submitButtonText}>Add Goal</Text>
+        <Text style={styles.submitButtonText}>Edit Job</Text>
       </TouchableOpacity>
     </View>
   );
@@ -118,7 +98,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: "bold",
-    color: "#00796B",
+    color: "#007bff",
     marginBottom: 20,
   },
   form: {
@@ -127,7 +107,7 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 50,
-    borderColor: "#00796B",
+    borderColor: "#007bff",
     borderWidth: 1,
     borderRadius: 8,
     paddingLeft: 15,
@@ -135,13 +115,19 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     backgroundColor: "#fff",
   },
-  descriptionInput: {
-    height: 100,
-    textAlignVertical: "top",
+  switchContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: 15,
+  },
+  switchLabel: {
+    fontSize: 16,
+    color: "#333",
   },
   submitButton: {
     width: "100%",
-    backgroundColor: "#00796B",
+    backgroundColor: "#007bff",
     paddingVertical: 15,
     borderRadius: 8,
     alignItems: "center",
@@ -154,4 +140,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AddJob;
+export default EditJob;

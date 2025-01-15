@@ -10,6 +10,7 @@ import AddExpense from "../Screens/AddExpense";
 import EditExpense from "../Screens/EditExpense";
 import AddGoal from "../Screens/AddGoal";
 import AddJob from "../Screens/AddJob";
+import EditJob from "../Screens/EditJob";
 
 const Stack = createStackNavigator();
 const AuthenticatedStack = createStackNavigator();
@@ -120,6 +121,17 @@ const AuthenticatedStackScreen = () => (
         title: "Add Job",
         headerStyle: {
           backgroundColor: "#00796B",
+        },
+      }}
+    />
+    <AuthenticatedStack.Screen
+      name="edit-job"
+      component={EditJob}
+      options={{
+        headerShown: true,
+        title: "Edit Job",
+        headerStyle: {
+          backgroundColor: "#007bff",
         },
       }}
     />
