@@ -8,6 +8,7 @@ import {
   Alert,
 } from "react-native";
 import AuthContext from "../context/authContext";
+import { API_URL } from "@env";
 import axios from "axios";
 
 const AddJob = ({ navigation, route }) => {
@@ -45,7 +46,7 @@ const AddJob = ({ navigation, route }) => {
 
     try {
       const response = await axios.post(
-        `http://192.168.1.9:9080/api/v1/job/add`,
+        `${API_URL}/api/v1/job/add`,
         { name, salary, organization },
         { headers: { Authorization: `Bearer ${token}` } }
       );

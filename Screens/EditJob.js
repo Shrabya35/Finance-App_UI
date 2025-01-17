@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import AuthContext from "../context/authContext";
 import axios from "axios";
+import { API_URL } from "@env";
 
 const EditJob = ({ navigation, route }) => {
   const { job } = route.params;
@@ -26,7 +27,7 @@ const EditJob = ({ navigation, route }) => {
 
     try {
       const response = await axios.put(
-        `http://192.168.1.9:9080/api/v1/job/update/${job._id}`,
+        `${API_URL}/api/v1/job/update/${job._id}`,
         {
           name,
           salary: numericSalary,

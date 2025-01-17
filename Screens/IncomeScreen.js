@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import AuthContext from "../context/authContext";
 import axios from "axios";
+import { API_URL } from "@env";
 import Icon from "react-native-vector-icons/Ionicons";
 
 const IncomeScreen = ({ navigation }) => {
@@ -26,7 +27,7 @@ const IncomeScreen = ({ navigation }) => {
     try {
       setError(null);
       const response = await axios.get(
-        `http://192.168.1.9:9080/api/v1/income/get?page=${page}&limit=${limit}`,
+        `${API_URL}/api/v1/income/get?page=${page}&limit=${limit}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

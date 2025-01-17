@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import AuthContext from "../context/authContext";
+import { API_URL } from "@env";
 import axios from "axios";
 import Icon from "react-native-vector-icons/Ionicons";
 import * as Progress from "react-native-progress";
@@ -30,14 +31,11 @@ const HomeScreen = ({ navigation }) => {
   const getUserDetails = async () => {
     try {
       setError(null);
-      const response = await axios.get(
-        `http://192.168.1.9:9080/api/v1/user/get`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.get(`${API_URL}/api/v1/user/get`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       const userData = response.data;
       setUserdetail({
         user: userData.user,

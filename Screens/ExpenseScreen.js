@@ -12,6 +12,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 import AuthContext from "../context/authContext";
 import ConfirmAlert from "../alert/confirmAlert";
 import axios from "axios";
+import { API_URL } from "@env";
 
 const ExpenseScreen = ({ navigation }) => {
   const { token } = useContext(AuthContext);
@@ -30,7 +31,7 @@ const ExpenseScreen = ({ navigation }) => {
     try {
       setError(null);
       const response = await axios.get(
-        `http://192.168.1.9:9080/api/v1/expense/get?page=${page}&limit=${limit}`,
+        `${API_URL}/api/v1/expense/get?page=${page}&limit=${limit}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -66,7 +67,7 @@ const ExpenseScreen = ({ navigation }) => {
   const confirmDelete = async () => {
     try {
       const response = await axios.delete(
-        `http://192.168.1.9:9080/api/v1/expense/delete/${selectedId}`
+        `${API_URL}/api/v1/expense/delete/${selectedId}`
       );
 
       if (response.status === 200 || response.status === 204) {

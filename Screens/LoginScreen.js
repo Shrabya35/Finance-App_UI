@@ -11,6 +11,7 @@ import {
   Image,
 } from "react-native";
 import { Checkbox } from "react-native-paper";
+import { API_URL } from "@env";
 import { useNavigation } from "@react-navigation/native";
 import AuthContext from "../context/authContext";
 
@@ -30,10 +31,10 @@ const LoginScreen = () => {
 
     setIsLoading(true);
     try {
-      const response = await axios.post(
-        `http://192.168.1.9:9080/api/v1/auth/login`,
-        { email, password }
-      );
+      const response = await axios.post(`${API_URL}/api/v1/auth/login`, {
+        email,
+        password,
+      });
 
       const { token, message } = response.data;
 

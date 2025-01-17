@@ -10,6 +10,7 @@ import {
   Image,
 } from "react-native";
 import AuthContext from "../context/authContext";
+import { API_URL } from "@env";
 
 const ChangePassword = ({ navigation, route }) => {
   const { token } = useContext(AuthContext);
@@ -35,7 +36,7 @@ const ChangePassword = ({ navigation, route }) => {
 
     try {
       const response = await axios.patch(
-        `http://192.168.1.9:9080/api/v1/auth/change-password`,
+        `${API_URL}/api/v1/auth/change-password`,
         {
           oldPassword: password,
           newPassword,

@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import AuthContext from "../context/authContext";
+import { API_URL } from "@env";
 
 const SignupScreen = () => {
   const { signup } = useContext(AuthContext);
@@ -35,14 +36,11 @@ const SignupScreen = () => {
 
     setIsLoading(true);
     try {
-      const response = await axios.post(
-        `http://192.168.1.9:9080/api/v1/auth/register`,
-        {
-          name,
-          email,
-          password,
-        }
-      );
+      const response = await axios.post(`${API_URL}/api/v1/auth/register`, {
+        name,
+        email,
+        password,
+      });
 
       const { token, message } = response.data;
 

@@ -9,6 +9,7 @@ import {
   Switch,
 } from "react-native";
 import AuthContext from "../context/authContext";
+import { API_URL } from "@env";
 import axios from "axios";
 
 const AddExpense = ({ navigation }) => {
@@ -35,7 +36,7 @@ const AddExpense = ({ navigation }) => {
 
     try {
       const response = await axios.post(
-        `http://192.168.1.9:9080/api/v1/expense/add`,
+        `${API_URL}/api/v1/expense/add`,
         {
           name,
           amount: numericAmount,

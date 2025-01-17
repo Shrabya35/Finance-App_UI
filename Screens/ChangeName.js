@@ -1,5 +1,4 @@
 import React, { useContext, useState } from "react";
-import axios from "axios";
 import {
   View,
   Text,
@@ -10,6 +9,8 @@ import {
   Image,
 } from "react-native";
 import AuthContext from "../context/authContext";
+import { API_URL } from "@env";
+import axios from "axios";
 
 const ChangeName = ({ navigation, route }) => {
   const { token } = useContext(AuthContext);
@@ -28,7 +29,7 @@ const ChangeName = ({ navigation, route }) => {
     }
     try {
       const response = await axios.patch(
-        `http://192.168.1.9:9080/api/v1/user/edit-name`,
+        `${API_URL}/api/v1/user/edit-name`,
         {
           name,
         },

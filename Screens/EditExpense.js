@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import AuthContext from "../context/authContext";
 import axios from "axios";
+import { API_URL } from "@env";
 
 const EditExpense = ({ navigation, route }) => {
   const { expense } = route.params;
@@ -28,7 +29,7 @@ const EditExpense = ({ navigation, route }) => {
 
     try {
       const response = await axios.put(
-        `http://192.168.1.9:9080/api/v1/expense/update/${expense._id}`,
+        `${API_URL}/api/v1/expense/update/${expense._id}`,
         {
           name,
           amount: numericAmount,

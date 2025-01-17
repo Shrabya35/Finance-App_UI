@@ -8,6 +8,7 @@ import {
   Alert,
 } from "react-native";
 import AuthContext from "../context/authContext";
+import { API_URL } from "@env";
 import axios from "axios";
 
 const AddIncome = ({ navigation }) => {
@@ -24,7 +25,7 @@ const AddIncome = ({ navigation }) => {
 
     try {
       const response = await axios.post(
-        `http://192.168.1.9:9080/api/v1/income/add`,
+        `${API_URL}/api/v1/income/add`,
         { name, amount, description },
         { headers: { Authorization: `Bearer ${token}` } }
       );

@@ -8,6 +8,7 @@ import {
   Alert,
 } from "react-native";
 import AuthContext from "../context/authContext";
+import { API_URL } from "@env";
 import axios from "axios";
 
 const AddGoal = ({ navigation, route }) => {
@@ -53,7 +54,7 @@ const AddGoal = ({ navigation, route }) => {
 
     try {
       const response = await axios.post(
-        `http://192.168.1.9:9080/api/v1/goal/add`,
+        `${API_URL}/api/v1/goal/add`,
         { name, targetAmount, description, monthlyContribution, deadline },
         { headers: { Authorization: `Bearer ${token}` } }
       );

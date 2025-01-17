@@ -11,6 +11,7 @@ import {
   Alert,
 } from "react-native";
 import axios from "axios";
+import { API_URL } from "@env";
 import AuthContext from "../context/authContext";
 import * as Progress from "react-native-progress";
 import ConfirmAlert from "../alert/confirmAlert";
@@ -34,7 +35,7 @@ const GoalsScreen = ({ navigation }) => {
     setError(null);
     try {
       const response = await axios.get(
-        `http://192.168.1.9:9080/api/v1/goal/get?page=${page}&limit=${limit}`,
+        `${API_URL}/api/v1/goal/get?page=${page}&limit=${limit}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -79,7 +80,7 @@ const GoalsScreen = ({ navigation }) => {
   const confirmDelete = async () => {
     try {
       const response = await axios.delete(
-        `http://192.168.1.9:9080/api/v1/goal/delete/${selectedId}`
+        `${API_URL}/api/v1/goal/delete/${selectedId}`
       );
 
       if (response.status === 200 || response.status === 204) {
@@ -106,7 +107,7 @@ const GoalsScreen = ({ navigation }) => {
         return;
       }
       const response = await axios.patch(
-        `http://192.168.1.9:9080/api/v1/goal/contribute`,
+        `${API_URL}/api/v1/goal/contribute`,
         {
           amount,
         },
