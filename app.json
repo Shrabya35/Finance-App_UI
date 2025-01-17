@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "finance",
-    "slug": "finance",
+    "name": "Finance Tracker",
+    "slug": "finance-tracker",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/logo.png",
@@ -17,12 +17,18 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.shrbaya.finance"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/icon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "b1390245-e399-4f57-aac8-d78e183d2883"
+      }
     }
   }
 }

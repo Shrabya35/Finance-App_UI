@@ -53,7 +53,7 @@ const EditExpense = ({ navigation, route }) => {
       console.error("Error editing expense:", error);
       Alert.alert(
         "Error",
-        error.response?.data?.error || "Unknown error occurred"
+        error.response?.data?.message || "Unknown error occurred"
       );
     }
   };

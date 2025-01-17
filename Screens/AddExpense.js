@@ -45,7 +45,6 @@ const AddExpense = ({ navigation }) => {
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
-      // Reset form
       setName("");
       setAmount("");
       setIsRecurring(false);
@@ -61,7 +60,7 @@ const AddExpense = ({ navigation }) => {
       console.error("Error adding expense:", error);
       Alert.alert(
         "Error",
-        error.response?.data?.error || "Unknown error occurred"
+        error.response?.data?.message || "Unknown error occurred"
       );
     }
   };

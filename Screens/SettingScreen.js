@@ -12,7 +12,7 @@ import {
 import AuthContext from "../context/authContext";
 import axios from "axios";
 
-const SettingScreen = () => {
+const SettingScreen = ({ navigation }) => {
   const { token, logout } = useContext(AuthContext);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -50,6 +50,11 @@ const SettingScreen = () => {
     getUserDetails();
   }, [token]);
 
+  const handleRefresh = () => {
+    setRefreshing(true);
+    getUserDetails();
+  };
+
   if (loading && !refreshing) {
     return (
       <View style={styles.loadingContainer}>
@@ -69,12 +74,6 @@ const SettingScreen = () => {
       </View>
     );
   }
-
-  const handleRefresh = () => {
-    setRefreshing(true);
-    getUserDetails();
-  };
-
   return (
     <ScrollView
       style={styles.container}
@@ -89,12 +88,23 @@ const SettingScreen = () => {
       </View>
       <View style={styles.accountSetting}>
         <Text style={styles.title}>Account Settings</Text>
-        <TouchableOpacity style={styles.settingSection}>
-          <Text style={styles.settingSectionText}>Edit Profile</Text>
+        <TouchableOpacity
+          style={styles.settingSection}
+          onPress={() =>
+            navigation.navigate("edit-name", {
+              oldname: user.name,
+            })
+          }
+        >
+          <Text style={styles.settingSectionText}>Change name</Text>
           <Text style={styles.settingSectionText}>{">"}</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.settingSection}>
-          <Text style={styles.settingSectionText}>Change Password</Text>
+
+        <TouchableOpacity
+          style={styles.settingSection}
+          onPress={() => navigation.navigate("change-password")}
+        >
+          <Text style={styles.settingSectionText}>Edit password</Text>
           <Text style={styles.settingSectionText}>{">"}</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.settingSection} onPress={logout}>
@@ -110,6 +120,36 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#F5F5F5",
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#F5F5F5",
+  },
+  loadingText: {
+    marginTop: 10,
+    fontSize: 16,
+    color: "#00796B",
+  },
+  errorContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#F5F5F5",
+  },
+  errorText: {
+    fontSize: 16,
+    color: "#F44336",
+    textAlign: "center",
+    marginHorizontal: 20,
+  },
+  retryText: {
+    marginTop: 20,
+    fontSize: 16,
+    color: "#00796B",
+    textDecorationLine: "underline",
+    textAlign: "center",
   },
   profileContainer: {
     padding: 20,

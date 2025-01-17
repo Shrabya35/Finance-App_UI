@@ -79,7 +79,7 @@ const AddGoal = ({ navigation, route }) => {
       console.error("Error adding goal:", error);
       Alert.alert(
         "Error",
-        "There was an issue adding your goal. Please try again."
+        error.response?.data?.message || "Unknown error occurred"
       );
     }
   };

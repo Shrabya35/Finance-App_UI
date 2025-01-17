@@ -7,6 +7,8 @@ import {
   ScrollView,
   RefreshControl,
   TouchableOpacity,
+  TextInput,
+  Alert,
 } from "react-native";
 import axios from "axios";
 import AuthContext from "../context/authContext";
@@ -18,6 +20,7 @@ const GoalsScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState(null);
+  const [amount, setAmount] = useState("");
   const [goals, setGoals] = useState([]);
   const [currentGoal, setCurrentGoal] = useState(null);
   const [limit, setLimit] = useState(10);
@@ -88,8 +91,39 @@ const GoalsScreen = ({ navigation }) => {
       }
     } catch (error) {
       console.error("Error deleting goal:", error.message);
+      Alert.alert(
+        "Error",
+        error.response?.data?.message || "Unknown error occurred"
+      );
     } finally {
       setAlertVisible(false);
+    }
+  };
+
+  const handleContribute = async () => {
+    try {
+      if (!amount) {
+        return;
+      }
+      const response = await axios.patch(
+        `http://192.168.1.9:9080/api/v1/goal/contribute`,
+        {
+          amount,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      Alert.alert(`Successfully added ${amount} to your goal `);
+      setAmount("");
+    } catch (error) {
+      console.error("Error COntributing to goal:", error);
+      Alert.alert(
+        "Error",
+        error.response?.data?.message || "Unknown error occurred"
+      );
     }
   };
 
@@ -240,6 +274,24 @@ const GoalsScreen = ({ navigation }) => {
             </View>
           )}
         </View>
+        {currentGoal && <Text style={styles.title}>Goal Contribution</Text>}
+        {currentGoal && (
+          <View style={styles.goalContribution}>
+            <TextInput
+              style={styles.input}
+              placeholder="Amount"
+              keyboardType="numeric"
+              value={amount}
+              onChangeText={setAmount}
+            />
+            <TouchableOpacity
+              style={styles.contributeButton}
+              onPress={handleContribute}
+            >
+              <Text style={styles.contributeButtonText}>Contribute</Text>
+            </TouchableOpacity>
+          </View>
+        )}
         <Text style={styles.title}>Goals History</Text>
         <View style={styles.goals}>
           {goals && goals.length > 0 ? (
@@ -247,13 +299,19 @@ const GoalsScreen = ({ navigation }) => {
               return (
                 <View style={styles.goalsContainer} key={index}>
                   <View style={styles.goalsContainerLeft}>
-                    <Text style={styles.goalDate}>
-                      {new Date(item.date).toLocaleDateString()}
-                    </Text>
+                    <Text style={styles.goalDate}>{item.targetAmount}</Text>
                     <Text style={styles.goalName}>{item.name}</Text>
                   </View>
                   <View style={styles.goalsContainerRight}>
-                    <Text style={[styles.goalAmount]}>{item.amount}</Text>
+                    {item.isAchieved ? (
+                      <Text style={{ color: "#00796B", fontWeight: "bold" }}>
+                        Achieved
+                      </Text>
+                    ) : (
+                      <Text style={{ color: "#D32F2F", fontWeight: "bold" }}>
+                        Expired
+                      </Text>
+                    )}
                   </View>
                 </View>
               );
@@ -395,6 +453,35 @@ const styles = StyleSheet.create({
   },
   setGoalText: {
     textAlign: "center",
+    color: "#FFF",
+    fontWeight: "bold",
+  },
+  goalContribution: {
+    flex: 1,
+    paddingHorizontal: 10,
+    paddingRight: 2,
+    marginVertical: 10,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  input: {
+    width: "50%",
+    height: 50,
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingHorizontal: 15,
+    fontSize: 16,
+    backgroundColor: "#fff",
+  },
+  contributeButton: {
+    backgroundColor: "#1f1225",
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    borderRadius: 5,
+    marginHorizontal: 5,
+  },
+  contributeButtonText: {
     color: "#FFF",
     fontWeight: "bold",
   },

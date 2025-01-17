@@ -48,7 +48,7 @@ const AddIncome = ({ navigation }) => {
       console.error("Error adding income:", error);
       Alert.alert(
         "Error",
-        "There was an issue adding your income. Please try again."
+        error.response?.data?.message || "Unknown error occurred"
       );
     }
   };

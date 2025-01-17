@@ -80,6 +80,10 @@ const ExpenseScreen = ({ navigation }) => {
       }
     } catch (error) {
       console.error("Error deleting expense:", error.message);
+      Alert.alert(
+        "Error",
+        error.response?.data?.message || "Unknown error occurred"
+      );
     } finally {
       setAlertVisible(false);
     }

@@ -49,7 +49,7 @@ const EditJob = ({ navigation, route }) => {
       console.error("Error editing Job:", error);
       Alert.alert(
         "Error",
-        error.response?.data?.error || "Unknown error occurred"
+        error.response?.data?.message || "Unknown error occurred"
       );
     }
   };

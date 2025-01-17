@@ -11,6 +11,8 @@ import EditExpense from "../Screens/EditExpense";
 import AddGoal from "../Screens/AddGoal";
 import AddJob from "../Screens/AddJob";
 import EditJob from "../Screens/EditJob";
+import ChangeName from "../Screens/ChangeName";
+import ChangePassword from "../Screens/ChangePassword";
 
 const Stack = createStackNavigator();
 const AuthenticatedStack = createStackNavigator();
@@ -132,6 +134,28 @@ const AuthenticatedStackScreen = () => (
         title: "Edit Job",
         headerStyle: {
           backgroundColor: "#007bff",
+        },
+      }}
+    />
+    <AuthenticatedStack.Screen
+      name="edit-name"
+      component={ChangeName}
+      options={{
+        headerShown: true,
+        title: "Change name",
+        headerStyle: {
+          backgroundColor: "#F9F9F9",
+        },
+      }}
+    />
+    <AuthenticatedStack.Screen
+      name="change-password"
+      component={ChangePassword}
+      options={{
+        headerShown: true,
+        title: "Change Pasword",
+        headerStyle: {
+          backgroundColor: "#F9F9F9",
         },
       }}
     />
